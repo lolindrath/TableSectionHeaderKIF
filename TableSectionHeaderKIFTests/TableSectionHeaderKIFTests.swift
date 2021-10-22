@@ -1,33 +1,39 @@
 //
-//  TableSectionHeaderKIFTests.swift
-//  TableSectionHeaderKIFTests
+//  TableSectionTestingTests.swift
+//  TableSectionTestingTests
 //
 //  Created by Williams, Andrew on 10/22/21.
 //
 
 import XCTest
+import KIF
 @testable import TableSectionHeaderKIF
 
-class TableSectionHeaderKIFTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+extension XCTestCase {
+    func tester(file: String = #file, _ line: Int = #line, executionTimeout: TimeInterval = 5) -> KIFUITestActor {
+        let actor = KIFUITestActor(inFile: file, atLine: line, delegate: self)!
+        actor.usingTimeout(executionTimeout)
+        return actor
     }
+}
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+class TableSectionTestingTests: XCTestCase {
+    
+    func displayVC(_ viewController: UIViewController, inNav: Bool = true, speed: Float = 100) {
+        UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.rootViewController = inNav ? UINavigationController(rootViewController: viewController) : viewController
+        UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.makeKeyAndVisible()
+
     }
+    
+    func testLayout() {
+        let vc = UIStoryboard(name: "Main", bundle: Bundle(for: ViewController.self)).instantiateViewController(withIdentifier: "ViewController")
+        displayVC(vc)
+        
+        let navigationSubtitle = tester().waitForView(withAccessibilityIdentifier: "NavigationSubtitle") as! UILabel
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+        
+        XCTAssertEqual(navigationSubtitle.text, "Some Text Here")
     }
 
 }

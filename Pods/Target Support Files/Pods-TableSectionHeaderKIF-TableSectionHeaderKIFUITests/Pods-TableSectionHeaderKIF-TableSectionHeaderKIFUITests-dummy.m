@@ -1,0 +1,5 @@
+#import <Foundation/Foundation.h>
+@interface PodsDummy_Pods_TableSectionHeaderKIF_TableSectionHeaderKIFUITests : NSObject
+@end
+@implementation PodsDummy_Pods_TableSectionHeaderKIF_TableSectionHeaderKIFUITests
+@end
